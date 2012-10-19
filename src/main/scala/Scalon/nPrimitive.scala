@@ -1,5 +1,7 @@
 package com.roundeights.scalon
 
+import com.google.gson.{JsonPrimitive, JsonElement, JsonNull}
+
 /**
  * String type
  */
@@ -7,6 +9,10 @@ case class nString ( override val asString: String ) extends nElement {
 
     /** {@inheritDoc} */
     override lazy val getType: nType.nType = nType.String
+
+    /** {@inheritDoc} */
+    override private[scalon] def gson: JsonElement
+        = new JsonPrimitive(asString)
 
     /** {@inheritDoc} */
     override def toString: String = asString
@@ -26,6 +32,10 @@ case class nInt ( override val asInt: BigInt ) extends nElement {
     override lazy val getType: nType.nType = nType.Int
 
     /** {@inheritDoc} */
+    override private[scalon] def gson: JsonElement
+        = new JsonPrimitive(asInt)
+
+    /** {@inheritDoc} */
     override def toString: String = asInt.toString
 }
 
@@ -43,6 +53,10 @@ case class nFloat ( override val asFloat: BigDecimal ) extends nElement {
     override lazy val getType: nType.nType = nType.Float
 
     /** {@inheritDoc} */
+    override private[scalon] def gson: JsonElement
+        = new JsonPrimitive(asFloat)
+
+    /** {@inheritDoc} */
     override def toString: String = asFloat.toString
 }
 
@@ -55,6 +69,10 @@ case class nBool ( override val asBool: Boolean ) extends nElement {
     override lazy val getType: nType.nType = nType.Bool
 
     /** {@inheritDoc} */
+    override private[scalon] def gson: JsonElement
+        = new JsonPrimitive(asFloat)
+
+    /** {@inheritDoc} */
     override def toString: String = asBool.toString
 }
 
@@ -65,6 +83,9 @@ case class nNull () extends nElement {
 
     /** {@inheritDoc} */
     override lazy val getType: nType.nType = nType.Null
+
+    /** {@inheritDoc} */
+    override private[scalon] def gson: JsonElement = JsonNull.INSTANCE
 
     /** {@inheritDoc} */
     override def toString: String = ""

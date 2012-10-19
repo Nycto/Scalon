@@ -2,26 +2,11 @@ package com.roundeights.scalon
 
 import org.specs2.mutable._
 
-class nArrayTest extends Specification {
+class nListTest extends Specification {
 
     val ary = nParser.json("""[ "test", 1234, 3.1415 ]""").asArray
 
-    "Accessing indexes" should {
-
-        "Return elems" in {
-            ary(0) must_== nString("test")
-            ary(1) must_== nInt(1234)
-            ary(2) must_== nFloat(3.1415)
-        }
-
-        "throw exceptions when the index is out of bounds" in {
-            ary(3) must throwAn[IndexOutOfBoundsException]
-            ary(4) must throwAn[IndexOutOfBoundsException]
-            ary(-1) must throwAn[IndexOutOfBoundsException]
-        }
-    }
-
-    "Arrays" should {
+    "Lists" should {
 
         "Convert to Strings" in {
             ary.toString must_== """["test",1234,3.1415]"""
@@ -46,6 +31,17 @@ class nArrayTest extends Specification {
             nParser.json("[]") must_!= nParser.json("[1,2,3]")
             nParser.json("[1,2,3]") must_!= nParser.json("[1,5,3]")
         }
+
+        "allow values to be prepended" in {
+            val list = 1 :: 2 :: nParser.jsonList("[3,4]")
+            list must_== nParser.json("[1,2,3,4]")
+        }
+
+        "allow lists to be prepended" in {
+            val list = nParser.jsonList("[1,2]") ::: nParser.jsonList("[3,4]")
+            list must_== nParser.json("[1,2,3,4]")
+        }
+
     }
 
 }

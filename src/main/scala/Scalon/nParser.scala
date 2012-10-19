@@ -10,11 +10,11 @@ object nParser {
     /**
      * Parses a GSON element
      */
-    def gson ( elem: JsonElement ): nElement = {
+    private[scalon] def gson ( elem: JsonElement ): nElement = {
         if ( elem.isJsonObject )
             new nObject.GSON( elem.getAsJsonObject )
         else if ( elem.isJsonArray )
-            new nArray.GSON( elem.getAsJsonArray )
+            new nList.GSON( elem.getAsJsonArray )
         else if ( elem.isJsonNull )
             nNull()
         else if ( elem.isJsonPrimitive ) {
@@ -43,6 +43,16 @@ object nParser {
      * Parses a JSON string
      */
     def json ( str: String ): nElement = gson( new JsonParser().parse(str) )
+
+    /**
+     * Parsers a json element and casts it to an object
+     */
+    def jsonObj ( str: String ): nObject = json( str ).asObject
+
+    /**
+     * Parsers a json element and casts it to an array
+     */
+    def jsonList ( str: String ): nList = json( str ).asArray
 
 }
 

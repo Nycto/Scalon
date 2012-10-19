@@ -19,22 +19,19 @@ class nObjectTest extends Specification {
 
         "Provide access to strings" in {
             obj.str("str") must_== Some("Something")
-            obj.elem("str") must_== Some(nString("Something"))
-            obj.hasKey("str") must_== true
+            obj.get("str") must_== Some(nString("Something"))
             obj.str("int") must_== None
         }
 
         "Provide access to ints" in {
             obj.int("int") must_== Some(BigInt(1234))
-            obj.elem("int") must_== Some(nInt(1234))
-            obj.hasKey("int") must_== true
+            obj.get("int") must_== Some(nInt(1234))
             obj.int("str") must_== None
         }
 
         "Provide access to floats" in {
             obj.float("float") must_== Some(BigDecimal(3.1415))
-            obj.elem("float") must_== Some(nFloat(3.1415))
-            obj.hasKey("float") must_== true
+            obj.get("float") must_== Some(nFloat(3.1415))
             obj.float("str") must_== None
         }
 
@@ -42,12 +39,10 @@ class nObjectTest extends Specification {
             obj.bool("str") must_== None
 
             obj.bool("truthy") must_== Some(true)
-            obj.elem("truthy") must_== Some(nBool(true))
-            obj.hasKey("truthy") must_== true
+            obj.get("truthy") must_== Some(nBool(true))
 
             obj.bool("falsey") must_== Some(false)
-            obj.elem("falsey") must_== Some(nBool(false))
-            obj.hasKey("falsey") must_== true
+            obj.get("falsey") must_== Some(nBool(false))
         }
 
         "Provide access to Nulls" in {
@@ -59,8 +54,7 @@ class nObjectTest extends Specification {
         "Provide access to objects" in {
             val equals = nParser.json("{1:1}").asObject
             obj.obj("obj") must_== Some( equals )
-            obj.elem("obj") must_== Some( equals )
-            obj.hasKey("obj") must_== true
+            obj.get("obj") must_== Some( equals )
             obj.obj("int") must_== None
         }
 
@@ -69,7 +63,7 @@ class nObjectTest extends Specification {
     "Objects" should {
 
         "List their keys" in {
-            obj.keys must_== Set(
+            obj.keySet must_== Set(
                 "str", "int", "float", "nil",
                 "truthy", "falsey", "obj", "ary"
             )
@@ -87,6 +81,23 @@ class nObjectTest extends Specification {
         "Convert to strings" in {
             nParser.json("{1:2,3:4}").toString must_== """{"1":2,"3":4}"""
         }
+
+        "Convert to maps" in {
+            nParser.jsonObj("{1:2,3:4}").toMap must_== Map(
+                "1" -> nInt(2), "3" -> nInt(4)
+            )
+        }
+
+        "allow keys to be added" in {
+            val result = nParser.jsonObj("{1:2}") + (("3", 4)) + (("5", "six"))
+            result.toString must_== """{"1":2,"3":4,"5":"six"}"""
+        }
+
+        "allow keys to be removed" in {
+            val result = nParser.jsonObj("{1:2,3:4,5:6}") - "3"
+            result.toString must_== """{"1":2,"5":6}"""
+        }
+
     }
 
 }
