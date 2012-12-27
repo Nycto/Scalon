@@ -7,91 +7,16 @@ import scala.collection.immutable.Map
 /**
  * Notation Objects
  */
-trait nObject extends nElement with Iterable[(String, nElement)] {
+trait nObject extends nElement with nObject.Interface[nObject] {
+
+    /** {@inheritDoc} */
+    protected def build ( obj: nObject ): nObject = obj
 
     /** {@inheritDoc} */
     override lazy val getType: nType.nType = nType.Object
 
     /** {@inheritDoc} */
     override def asObject: nObject = this
-
-    /**
-     * Returns this object as a map
-     */
-    def toMap: Map[String, nElement]
-
-    /**
-     * Returns a value from this object
-     */
-    def get( key: String ): Option[nElement]
-
-    /**
-     * Adds a new value to this object
-     */
-    def + ( keyVal: (String, nElement) ): nObject
-        = new nObject.Native( toMap + keyVal )
-
-    /**
-     * Adds a new value to this object
-     */
-    def - ( key: String ): nObject = new nObject.Native( toMap - key )
-
-    /**
-     * Returns whether a key exists
-     */
-    def contains( key: String ): Boolean = get(key).isDefined
-
-    /**
-     * Returns a set of all the keys in this object
-     */
-    def keySet: Set[String] = iterator.foldLeft( Set[String]() )( _ + _._1 )
-
-    /**
-     * Returns whether a key exists and is null
-     */
-    def isNull ( key: String ): Boolean = get( key ).exists( _.isNull )
-
-    /**
-     * Returns a key as a String, if the key exists and it is the
-     * correct type
-     */
-    def str ( key: String ): Option[String]
-        = get( key ).filter( _.isString ).map( _.asString )
-
-    /**
-     * Returns a key as an Integer, if the key exists and it is the
-     * correct type
-     */
-    def int ( key: String ): Option[BigInt]
-        = get( key ).filter( _.isInt ).map( _.asInt )
-
-    /**
-     * Returns a key as a Float, if the key exists and it is the
-     * correct type
-     */
-    def float ( key: String ): Option[BigDecimal]
-        = get( key ).filter( _.isFloat ).map( _.asFloat )
-
-    /**
-     * Returns a key as a Boolean, if the key exists and it is the
-     * correct type
-     */
-    def bool ( key: String ): Option[Boolean]
-        = get( key ).filter( _.isBool ).map( _.asBool )
-
-    /**
-     * Returns a key as an Object, if the key exists and it is the
-     * correct type
-     */
-    def obj ( key: String ): Option[nObject]
-        = get( key ).filter( _.isObject ).map( _.asObject )
-
-    /**
-     * Returns a key as an Array, if the key exists and it is the
-     * correct type
-     */
-    def ary ( key: String ): Option[nList]
-        = get( key ).filter( _.isArray ).map( _.asArray )
 
     /** {@inheritDoc} */
     override def equals ( that: Any ): Boolean = that match {
@@ -122,6 +47,99 @@ object nObject {
      */
     def apply ( source: Map[String, nElement] = Map() ): nObject
         = new nObject.Native( source )
+
+    /**
+     * The interface for nObjects
+     *
+     * @param [T] The type of object produced when you add or remove an
+     *      element from this object
+     */
+    trait Interface [T] extends Iterable[(String, nElement)] {
+
+        /**
+         * Builds a new output object any time an element is added or removed
+         */
+        protected def build ( obj: nObject ): T
+
+        /**
+         * Returns this object as a map
+         */
+        def toMap: Map[String, nElement]
+
+        /**
+         * Returns a value from this object
+         */
+        def get( key: String ): Option[nElement]
+
+        /**
+         * Adds a new value to this object
+         */
+        def + ( keyVal: (String, nElement) ): T
+            = build( new nObject.Native( toMap + keyVal ) )
+
+        /**
+         * Adds a new value to this object
+         */
+        def - ( key: String ): T = build( new nObject.Native( toMap - key ) )
+
+        /**
+         * Returns whether a key exists
+         */
+        def contains( key: String ): Boolean = get(key).isDefined
+
+        /**
+         * Returns a set of all the keys in this object
+         */
+        def keySet: Set[String] = iterator.foldLeft( Set[String]() )( _ + _._1 )
+
+        /**
+         * Returns whether a key exists and is null
+         */
+        def isNull ( key: String ): Boolean = get( key ).exists( _.isNull )
+
+        /**
+         * Returns a key as a String, if the key exists and it is the
+         * correct type
+         */
+        def str ( key: String ): Option[String]
+            = get( key ).filter( _.isString ).map( _.asString )
+
+        /**
+         * Returns a key as an Integer, if the key exists and it is the
+         * correct type
+         */
+        def int ( key: String ): Option[BigInt]
+            = get( key ).filter( _.isInt ).map( _.asInt )
+
+        /**
+         * Returns a key as a Float, if the key exists and it is the
+         * correct type
+         */
+        def float ( key: String ): Option[BigDecimal]
+            = get( key ).filter( _.isFloat ).map( _.asFloat )
+
+        /**
+         * Returns a key as a Boolean, if the key exists and it is the
+         * correct type
+         */
+        def bool ( key: String ): Option[Boolean]
+            = get( key ).filter( _.isBool ).map( _.asBool )
+
+        /**
+         * Returns a key as an Object, if the key exists and it is the
+         * correct type
+         */
+        def obj ( key: String ): Option[nObject]
+            = get( key ).filter( _.isObject ).map( _.asObject )
+
+        /**
+         * Returns a key as an Array, if the key exists and it is the
+         * correct type
+         */
+        def ary ( key: String ): Option[nList]
+            = get( key ).filter( _.isArray ).map( _.asArray )
+
+    }
 
     /**
      * A GSON based nObject
