@@ -1,15 +1,15 @@
 name := "Scalon"
 
-scalaVersion := "2.9.2"
+scalaVersion := "2.10.0-RC5"
 
 version := "0.1"
 
-// append -deprecation to the options passed to the Scala compiler
-scalacOptions += "-deprecation"
+// Compiler flags
+scalacOptions ++= Seq("-deprecation", "-feature")
 
 // Application dependencies
 libraryDependencies ++= Seq(
     "com.google.code.gson" % "gson" % "2.2.2",
-    "org.specs2" %% "specs2" % "1.12.2" % "test"
+    "org.specs2" %% "specs2" % "1.12.3" % "test"
 )
 

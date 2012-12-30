@@ -25,26 +25,20 @@ class nPrimitiveTest extends Specification {
         "Equal or not equal appropriately" in {
             (str == nString("str")) must_== true
             (str == nString("other")) must_== false
-            (str == int) must_== false
 
             (int == nInt(1234)) must_== true
             (int == nInt(4321)) must_== false
-            (int == str) must_== false
 
             (float == nFloat(3.1415)) must_== true
             (float == nFloat(2.78)) must_== false
-            (float == str) must_== false
 
             (nil == nNull()) must_== true
-            (nil == str) must_== false
 
             (truthy == nBool(true)) must_== true
             (truthy == nBool(false)) must_== false
-            (truthy == str) must_== false
 
             (falsey == nBool(false)) must_== true
             (falsey == nBool(true)) must_== false
-            (falsey == str) must_== false
         }
 
         "Convert to the appropriate string value" in {

@@ -1,6 +1,7 @@
 package com.roundeights.scalon
 
 import com.google.gson.{JsonElement, Gson}
+import scala.language.implicitConversions
 
 /**
  * The various types of values
