@@ -70,7 +70,7 @@ case class nBool ( override val asBool: Boolean ) extends nElement {
 
     /** {@inheritDoc} */
     override private[scalon] def gson: JsonElement
-        = new JsonPrimitive(asFloat)
+        = new JsonPrimitive(asBool)
 
     /** {@inheritDoc} */
     override def toString: String = asBool.toString

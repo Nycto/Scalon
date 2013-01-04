@@ -41,6 +41,15 @@ class nPrimitiveTest extends Specification {
             (falsey == nBool(true)) must_== false
         }
 
+        "Convert to the appropriate json value" in {
+            str.json must_== "\"str\""
+            int.json must_== "1234"
+            float.json must_== "3.1415"
+            nil.json must_== "null"
+            truthy.json must_== "true"
+            falsey.json must_== "false"
+        }
+
         "Convert to the appropriate string value" in {
             str.toString must_== "str"
             int.toString must_== "1234"
