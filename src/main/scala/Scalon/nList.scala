@@ -6,7 +6,7 @@ import scala.collection.{Iterable, Iterator}
 /**
  * Notation Array
  */
-trait nList extends nElement with Iterable[nElement] {
+trait nList extends nElement with Seq[nElement] {
 
     /** {@inheritDoc} */
     override lazy val getType: nType.nType = nType.Array
@@ -16,11 +16,6 @@ trait nList extends nElement with Iterable[nElement] {
 
     /** {@inheritDoc} */
     override def toString: String = json
-
-    /**
-     * Returns the length of this lit
-     */
-    def length: Int
 
     /**
      * Prepends a value to this list
@@ -66,6 +61,10 @@ object nList {
         override private[scalon] def gson: JsonElement = ary
 
         /** {@inheritDoc} */
+        override def apply ( idx: Int ): nElement
+            = nParser.gson( ary.get(idx) )
+
+        /** {@inheritDoc} */
         override def length: Int = ary.size()
 
         /** {@inheritDoc} */
@@ -88,6 +87,9 @@ object nList {
             toList.foreach { (item) => result.add( item.gson ) }
             result
         }
+
+        /** {@inheritDoc} */
+        override def apply ( idx: Int ): nElement = toList(idx)
 
         /** {@inheritDoc} */
         override def length: Int = toList.length

@@ -17,6 +17,17 @@ class nListTest extends Specification {
             nParser.json("""[]""").asArray.length must_== 0
         }
 
+        "Allow access to indexes for GSON based lists" in {
+            ary(0) must_== nString("test")
+            ary(1) must_== nInt(1234)
+        }
+
+        "Allow access to indexes for native nLists" in {
+            val list = 1 :: 2 :: nList()
+            list(0) must_== nInt(1)
+            list(1) must_== nInt(2)
+        }
+
         "Be iterable" in {
             val base = nParser.json("""[1,2,3,4]""").asArray
             base.foldRight( List[Int]() )( _.asInt.intValue :: _ ) must_==
