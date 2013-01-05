@@ -7,7 +7,7 @@ import scala.collection.immutable.Map
 /**
  * Notation Objects
  */
-trait nObject extends nElement with nObject.Interface[nObject] {
+trait nObject extends nElement with nObject.Interface[nObject] with Equals {
 
     /** {@inheritDoc} */
     protected def build ( obj: nObject ): nObject = obj
@@ -20,17 +20,21 @@ trait nObject extends nElement with nObject.Interface[nObject] {
 
     /** {@inheritDoc} */
     override def equals ( that: Any ): Boolean = that match {
-        case thatObj: nObject if (
-            thatObj.canEqual( this )
-            && keySet.diff( thatObj.keySet ) != 0
-        ) => forall {
-            (entry) => get(entry._1) == thatObj.get(entry._1)
+        case thatObj: nObject => {
+            thatObj.canEqual( this ) &&
+            keySet.diff( thatObj.keySet ) != 0 &&
+            this.forall { (entry) => get(entry._1) == thatObj.get(entry._1) }
         }
         case _ => false
     }
 
     /** {@inheritDoc} */
     override def canEqual ( that: Any ) = that.isInstanceOf[nObject]
+
+    /** {@inheritDoc} */
+    override def hashCode = this.foldLeft(1) { (accum, entry) =>
+        41 * (41 * accum + entry._1.hashCode) + entry._2.hashCode
+    }
 
     /** {@inheritDoc} */
     override def toString: String = json

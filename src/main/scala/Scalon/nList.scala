@@ -39,6 +39,9 @@ trait nList extends nElement with Seq[nElement] {
     /** {@inheritDoc} */
     override def canEqual ( that: Any ) = that.isInstanceOf[nList]
 
+    /** {@inheritDoc} */
+    override def hashCode = this.foldLeft(1) { 41 * _ + _.hashCode }
+
 }
 
 /**
