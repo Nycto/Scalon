@@ -52,8 +52,8 @@ object nList {
     /**
      * Creates a new nList
      */
-    def apply ( source: List[nElement] = List() ): nList
-        = new nList.Native( source )
+    def apply ( source: Seq[nElement] = List() ): nList
+        = new nList.Native( source.toList )
 
     /**
      * A GSON based nList
@@ -82,23 +82,26 @@ object nList {
     /**
      * An nList based on a list
      */
-    class Native ( override val toList: List[nElement] ) extends nList {
+    class Native ( private val data: Seq[nElement] ) extends nList {
+
+        /** Coverts this element to a list */
+        override def toList: List[nElement] = data.toList
 
         /** {@inheritDoc} */
         override private[scalon] def gson: JsonElement = {
             val result = new JsonArray()
-            toList.foreach { (item) => result.add( item.gson ) }
+            data.foreach { (item) => result.add( item.gson ) }
             result
         }
 
         /** {@inheritDoc} */
-        override def apply ( idx: Int ): nElement = toList(idx)
+        override def apply ( idx: Int ): nElement = data(idx)
 
         /** {@inheritDoc} */
-        override def length: Int = toList.length
+        override def length: Int = data.length
 
         /** {@inheritDoc} */
-        override def iterator: Iterator[nElement] = toList.iterator
+        override def iterator: Iterator[nElement] = data.iterator
 
     }
 
