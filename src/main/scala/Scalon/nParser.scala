@@ -32,11 +32,13 @@ object nParser {
                         => new nFloat( primitive.getAsBigDecimal.toString )
                 }
             }
-            else
-                throw new nException("Unexpected GSON Primitive type")
+            else {
+                throw new nParserException("Unexpected GSON Primitive type")
+            }
         }
-        else
-            throw new nException("Unexpected GSON type")
+        else {
+            throw new nParserException("Unexpected GSON type")
+        }
     }
 
     /**

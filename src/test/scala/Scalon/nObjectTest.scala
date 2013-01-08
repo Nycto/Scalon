@@ -18,31 +18,31 @@ class nObjectTest extends Specification {
     "Accessing values" should {
 
         "Provide access to strings" in {
-            obj.str("str") must_== Some("Something")
-            obj.get("str") must_== Some(nString("Something"))
-            obj.str("int") must_== None
+            obj.str_?("str") must_== Some("Something")
+            obj.get_?("str") must_== Some(nString("Something"))
+            obj.str_?("int") must_== None
         }
 
         "Provide access to ints" in {
-            obj.int("int") must_== Some(BigInt(1234))
-            obj.get("int") must_== Some(nInt(1234))
-            obj.int("str") must_== None
+            obj.int_?("int") must_== Some(BigInt(1234))
+            obj.get_?("int") must_== Some(nInt(1234))
+            obj.int_?("str") must_== None
         }
 
         "Provide access to floats" in {
-            obj.float("float") must_== Some(BigDecimal(3.1415))
-            obj.get("float") must_== Some(nFloat(3.1415))
-            obj.float("str") must_== None
+            obj.float_?("float") must_== Some(BigDecimal(3.1415))
+            obj.get_?("float") must_== Some(nFloat(3.1415))
+            obj.float_?("str") must_== None
         }
 
         "Provide access to Booleans" in {
-            obj.bool("str") must_== None
+            obj.bool_?("str") must_== None
 
-            obj.bool("truthy") must_== Some(true)
-            obj.get("truthy") must_== Some(nBool(true))
+            obj.bool_?("truthy") must_== Some(true)
+            obj.get_?("truthy") must_== Some(nBool(true))
 
-            obj.bool("falsey") must_== Some(false)
-            obj.get("falsey") must_== Some(nBool(false))
+            obj.bool_?("falsey") must_== Some(false)
+            obj.get_?("falsey") must_== Some(nBool(false))
         }
 
         "Provide access to Nulls" in {
@@ -53,9 +53,35 @@ class nObjectTest extends Specification {
 
         "Provide access to objects" in {
             val equals = nParser.json("{1:1}").asObject
-            obj.obj("obj") must_== Some( equals )
-            obj.get("obj") must_== Some( equals )
-            obj.obj("int") must_== None
+            obj.obj_?("obj") must_== Some( equals )
+            obj.get_?("obj") must_== Some( equals )
+            obj.obj_?("int") must_== None
+        }
+
+        "Provide access to arrays" in {
+            obj.ary_?("ary") must_== Some( 1 :: 2 :: 3 :: nList() )
+            obj.get_?("ary") must_== Some( 1 :: 2 :: 3 :: nList() )
+            obj.ary_?("int") must_== None
+        }
+
+        "Allow for direct access" in {
+            obj.get("str") must_== nString("Something")
+            obj.str("str") must_== "Something"
+            obj.int("int") must_== BigInt(1234)
+            obj.float("float") must_== BigDecimal(3.1415)
+            obj.bool("truthy") must_== true
+            obj.obj("obj") must_== nParser.json("{1:1}").asObject
+            obj.ary("ary") must_== 1 :: 2 :: 3 :: nList()
+        }
+
+        "throw exceptions for invalid direct access" in {
+            obj.get("Not A Key") must throwA[nMissingKey]
+            obj.str("int") must throwA[nMissingKey]
+            obj.int("str") must throwA[nMissingKey]
+            obj.float("int") must throwA[nMissingKey]
+            obj.bool("obj") must throwA[nMissingKey]
+            obj.obj("ary") must throwA[nMissingKey]
+            obj.ary("str") must throwA[nMissingKey]
         }
 
     }
