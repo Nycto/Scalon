@@ -20,12 +20,13 @@ trait nList extends nElement with Seq[nElement] {
     /**
      * Prepends a value to this list
      */
-    def :: ( elem: nElement ): nList = nList( elem :: toList )
+    def :: ( elem: nElement ): nList = new nList.Native( elem :: toList )
 
     /**
      * Prepends a list of values to this list
      */
-    def ::: ( elems: List[nElement] ): nList = nList( elems ::: toList )
+    def ::: ( elems: List[nElement] ): nList
+        = new nList.Native( elems ::: toList )
 
     /** {@inheritDoc} */
     override def equals ( that: Any ): Boolean = that match {
@@ -52,8 +53,11 @@ object nList {
     /**
      * Creates a new nList
      */
-    def apply ( source: Seq[nElement] = List() ): nList
-        = new nList.Native( source.toList )
+    def apply ( elements: Any* ): nList = {
+        elements.foldRight[nList]( new nList.Native() ) {
+            (elem, accum) => nElement(elem) :: accum
+        }
+    }
 
     /**
      * A GSON based nList
@@ -82,7 +86,7 @@ object nList {
     /**
      * An nList based on a list
      */
-    class Native ( private val data: Seq[nElement] ) extends nList {
+    class Native ( private val data: Seq[nElement] = List() ) extends nList {
 
         /** Coverts this element to a list */
         override def toList: List[nElement] = data.toList

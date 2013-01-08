@@ -47,10 +47,16 @@ trait nObject extends nElement with nObject.Interface[nObject] with Equals {
 object nObject {
 
     /**
-     * Creates a new nList
+     * Creates a new nObject
      */
     def apply ( source: Map[String, nElement] = Map() ): nObject
         = new nObject.Native( source )
+
+    /**
+     * Creates a new nObject
+     */
+    def apply ( data: (Any, Any)* ): nObject
+        = nElement( Map(data:_*) ).asObject
 
     /**
      * The interface for nObjects
@@ -84,8 +90,9 @@ object nObject {
         /**
          * Adds a new value to this object
          */
-        def + ( keyVal: (String, nElement) ): T
-            = build( new nObject.Native( toMap + keyVal ) )
+        def + ( keyVal: (Any, Any) ): T = build( new nObject.Native(
+            toMap + ( keyVal._1.toString -> nElement( keyVal._2 ) )
+        ) )
 
         /**
          * Adds a new value to this object
