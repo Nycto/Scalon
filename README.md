@@ -1,4 +1,4 @@
-Scalon
+Scalon [![Build Status](https://secure.travis-ci.org/Nycto/Scalon.png?branch=master)](http://travis-ci.org/Nycto/Scalon)
 ======
 
 Scalon (Scala Object Notation)
@@ -9,8 +9,6 @@ less verbose.
 
 The focus of this library is for the primary interface to revolve around
 interacting with Objects and Arrays.
-
-[![Build Status](https://secure.travis-ci.org/Nycto/Scalon.png?branch=master)](http://travis-ci.org/Nycto/Scalon)
 
 License
 -------
