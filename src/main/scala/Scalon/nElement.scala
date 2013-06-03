@@ -38,6 +38,30 @@ object nElement {
     implicit def list_to_nList ( data: List[nElement] ): nList = nList( data )
     implicit def nList_to_list ( data: nList ): List[nElement] = data.toList
 
+    /** Parses a map */
+    private def parseMap( data: Map[_, _] ) = nObject(
+        data.foldLeft( Map[String,nElement]() ) {
+            (accum, pair) => pair match {
+                case (_, None) => accum
+                case (key, Some(value))
+                    => accum + ( key.toString -> apply(value) )
+                case (key, value)
+                    => accum + ( key.toString -> apply(value) )
+            }
+        }
+    )
+
+    /** Parses a list of elements */
+    private def parseList ( data: Seq[_] ): nList = {
+        data.foldRight( nList() ) {
+            (value, accum) => value match {
+                case None => accum
+                case Some(inner) => apply(inner) :: accum
+                case _ => apply(value) :: accum
+            }
+        }
+    }
+
     /**
      * Converts a value into a notation element
      */
@@ -51,10 +75,8 @@ object nElement {
         case data: Double => nFloat( BigDecimal(data) )
         case data: BigDecimal => nFloat( data )
         case data: Boolean => nBool( data )
-        case data: Seq[_] => data.foldRight( nList() ){ apply(_) :: _ }
-        case data: Map[_, _] => nObject( data.map {
-            pair => ( pair._1.toString -> apply(pair._2) )
-        } )
+        case data: Seq[_] => parseList( data )
+        case data: Map[_, _] => parseMap( data )
         case _ => throw new nParserException(
             "Unparsable type: %s".format( elem.getClass.getName )
         )

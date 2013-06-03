@@ -37,10 +37,19 @@ class nElementTest extends Specification {
             nElement( List(1, 2, 3) ) must_== nList(1, 2, 3)
         }
 
+        "Handle Options within Lists" in {
+            nElement( List(Some(1), None, Some(2)) ) must_== nList(1, 2)
+        }
+
         "Handle Maps" in {
             nElement( Map() ) must_== nObject()
             nElement( Map(1 -> "one", 2 -> "two") )
                 .must_==( nObject( 1 -> "one", 2 -> "two" ) )
+        }
+
+        "Handle Options within Maps" in {
+            nElement( Map(1 -> Some("one"), 2 -> None) )
+                .must_==( nObject( 1 -> "one") )
         }
 
     }
