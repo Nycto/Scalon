@@ -1,16 +1,21 @@
 package com.roundeights.scalon
 
 /**
+ * The base class for all nParser Exception
+ */
+abstract class nException(message: String) extends Exception(message)
+
+/**
  * Parsing Exception
  */
-case class nParserException (message: String) extends Exception (message)
+case class nParserException (message: String) extends nException(message)
 
 /**
  * Type mismatch errors
  */
 case class nTypeMismatch (
     requested: String, actual: nType.nType
-) extends Exception (
+) extends nException (
     "Type mismatch. Expected: %s, Actual: %s".format( requested, actual )
 )
 
@@ -20,7 +25,7 @@ case class nTypeMismatch (
 case class nMissingKey (
     key: String,
     expectedType: String
-) extends NoSuchElementException (
+) extends nException(
     "nObject is missing the '%s' key of type '%s'".format(key, expectedType)
 )
 
