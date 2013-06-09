@@ -1,6 +1,8 @@
 package com.roundeights.scalon
 
 import com.google.gson.{JsonElement, JsonParser}
+import java.io.File
+import scala.io.Source
 
 /**
  * An interface for parsing
@@ -45,6 +47,11 @@ object nParser {
      * Parses a JSON string
      */
     def json ( str: String ): nElement = gson( new JsonParser().parse(str) )
+
+    /**
+     * Parses a JSON File
+     */
+    def json ( file: File ): nElement = json( Source.fromFile(file).mkString )
 
     /**
      * Parsers a json element and casts it to an object
