@@ -31,6 +31,13 @@ class nParserTest extends Specification {
         }
     }
 
+    "Parser errors" should {
+        "throw nParserExceptions" in {
+            nParser.json("{") must throwA[nParserException]
+            nParser.json("bare words") must throwA[nParserException]
+        }
+    }
+
 }
 
 

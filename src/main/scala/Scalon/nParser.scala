@@ -1,6 +1,6 @@
 package com.roundeights.scalon
 
-import com.google.gson.{JsonElement, JsonParser}
+import com.google.gson.{JsonElement, JsonParser, JsonSyntaxException}
 import java.io.File
 import scala.io.Source
 
@@ -46,7 +46,14 @@ object nParser {
     /**
      * Parses a JSON string
      */
-    def json ( str: String ): nElement = gson( new JsonParser().parse(str) )
+    def json ( str: String ): nElement = {
+        gson( try {
+            new JsonParser().parse(str)
+        } catch {
+            case err: JsonSyntaxException
+                => throw new nParserException( err.getMessage )
+        })
+    }
 
     /**
      * Parses a JSON File
