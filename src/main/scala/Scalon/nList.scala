@@ -12,7 +12,7 @@ trait nList extends nElement with Seq[nElement] {
     override lazy val getType: nType.nType = nType.Array
 
     /** {@inheritDoc} */
-    override def asArray: nList = this
+    override def asArray_? = Some(this)
 
     /** {@inheritDoc} */
     override def toString: String = json

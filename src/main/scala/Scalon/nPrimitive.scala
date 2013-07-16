@@ -15,6 +15,9 @@ case class nString ( override val asString: String ) extends nElement {
         = new JsonPrimitive(asString)
 
     /** {@inheritDoc} */
+    override def asString_? = Some( asString )
+
+    /** {@inheritDoc} */
     override def toString: String = asString
 }
 
@@ -34,6 +37,9 @@ case class nInt ( override val asInt: BigInt ) extends nElement {
     /** {@inheritDoc} */
     override private[scalon] def gson: JsonElement
         = new JsonPrimitive(asInt)
+
+    /** {@inheritDoc} */
+    override def asInt_? = Some( asInt )
 
     /** {@inheritDoc} */
     override def toString: String = asInt.toString
@@ -57,6 +63,9 @@ case class nFloat ( override val asFloat: BigDecimal ) extends nElement {
         = new JsonPrimitive(asFloat)
 
     /** {@inheritDoc} */
+    override def asFloat_? = Some( asFloat )
+
+    /** {@inheritDoc} */
     override def toString: String = asFloat.toString
 }
 
@@ -71,6 +80,9 @@ case class nBool ( override val asBool: Boolean ) extends nElement {
     /** {@inheritDoc} */
     override private[scalon] def gson: JsonElement
         = new JsonPrimitive(asBool)
+
+    /** {@inheritDoc} */
+    override def asBool_? = Some( asBool )
 
     /** {@inheritDoc} */
     override def toString: String = asBool.toString

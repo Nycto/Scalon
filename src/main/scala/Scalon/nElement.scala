@@ -118,12 +118,28 @@ trait nElement extends Equals {
     /**
      * Type casting methods
      */
-    def asString: String = throw nTypeMismatch( "String", getType )
-    def asInt: BigInt = throw nTypeMismatch( "Int", getType )
-    def asFloat: BigDecimal = throw nTypeMismatch( "Float", getType )
-    def asBool: Boolean = throw nTypeMismatch( "Bool", getType )
-    def asObject: nObject = throw nTypeMismatch( "Object", getType )
-    def asArray: nList = throw nTypeMismatch( "Array", getType )
+    def asString: String
+        = asString_?.getOrElse( throw nTypeMismatch( "String", getType ) )
+    def asInt: BigInt
+        = asInt_?.getOrElse( throw nTypeMismatch( "Int", getType ) )
+    def asFloat: BigDecimal
+        = asFloat_?.getOrElse( throw nTypeMismatch( "Float", getType ) )
+    def asBool: Boolean
+        = asBool_?.getOrElse( throw nTypeMismatch( "Bool", getType ) )
+    def asObject: nObject
+        = asObject_?.getOrElse( throw nTypeMismatch( "Object", getType ) )
+    def asArray: nList
+        = asArray_?.getOrElse( throw nTypeMismatch( "Array", getType ) )
+
+    /**
+     * Safe type casting methods
+     */
+    def `asString_?`: Option[String] = None
+    def `asInt_?`: Option[BigInt] = None
+    def `asFloat_?`: Option[BigDecimal] = None
+    def `asBool_?`: Option[Boolean] = None
+    def `asObject_?`: Option[nObject] = None
+    def `asArray_?`: Option[nList] = None
 
 }
 

@@ -16,7 +16,7 @@ trait nObject extends nElement with nObject.Interface[nObject] with Equals {
     override lazy val getType: nType.nType = nType.Object
 
     /** {@inheritDoc} */
-    override def asObject: nObject = this
+    override def asObject_? = Some( this )
 
     /** {@inheritDoc} */
     override def equals ( that: Any ): Boolean = that match {
