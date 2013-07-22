@@ -52,6 +52,15 @@ class nElementTest extends Specification {
                 .must_==( nObject( 1 -> "one") )
         }
 
+        "Handle Sets" in {
+            nElement( Set() ) must_== nList()
+            nElement( Set("one", "two") ) must_== nList("one", "two")
+        }
+
+        "Handle Options within Sets" in {
+            nElement( Set(Some(1), None, Some(2)) ) must_== nList(1, 2)
+        }
+
     }
 
 }

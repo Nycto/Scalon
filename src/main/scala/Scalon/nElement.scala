@@ -52,7 +52,7 @@ object nElement {
     )
 
     /** Parses a list of elements */
-    private def parseList ( data: Seq[_] ): nList = {
+    private def parseList ( data: Traversable[_] ): nList = {
         data.foldRight( nList() ) {
             (value, accum) => value match {
                 case None => accum
@@ -75,6 +75,7 @@ object nElement {
         case data: Double => nFloat( BigDecimal(data) )
         case data: BigDecimal => nFloat( data )
         case data: Boolean => nBool( data )
+        case data: Set[_] => parseList( data )
         case data: Seq[_] => parseList( data )
         case data: Map[_, _] => parseMap( data )
         case _ => throw new nParserException(
