@@ -59,6 +59,15 @@ class nPrimitiveTest extends Specification {
             falsey.toString must_== "false"
         }
 
+        "Be convertable to strings (where appropriate)" in {
+            str.asString must_== "str"
+            int.asString must_== "1234"
+            float.asString must_== "3.1415"
+            nil.asString must_== ""
+            truthy.asString must_== "true"
+            falsey.asString must_== "false"
+        }
+
     }
 
 }

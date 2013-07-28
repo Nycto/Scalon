@@ -42,6 +42,9 @@ case class nInt ( override val asInt: BigInt ) extends nElement {
     override def asInt_? = Some( asInt )
 
     /** {@inheritDoc} */
+    override def asString_? = Some( asInt.toString )
+
+    /** {@inheritDoc} */
     override def toString: String = asInt.toString
 }
 
@@ -66,6 +69,9 @@ case class nFloat ( override val asFloat: BigDecimal ) extends nElement {
     override def asFloat_? = Some( asFloat )
 
     /** {@inheritDoc} */
+    override def asString_? = Some( asFloat.toString )
+
+    /** {@inheritDoc} */
     override def toString: String = asFloat.toString
 }
 
@@ -85,6 +91,9 @@ case class nBool ( override val asBool: Boolean ) extends nElement {
     override def asBool_? = Some( asBool )
 
     /** {@inheritDoc} */
+    override def asString_? = Some( asBool.toString )
+
+    /** {@inheritDoc} */
     override def toString: String = asBool.toString
 }
 
@@ -98,6 +107,9 @@ case class nNull () extends nElement {
 
     /** {@inheritDoc} */
     override private[scalon] def gson: JsonElement = JsonNull.INSTANCE
+
+    /** {@inheritDoc} */
+    override def asString_? = Some("")
 
     /** {@inheritDoc} */
     override def toString: String = ""
