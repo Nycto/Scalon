@@ -45,6 +45,23 @@ object nElement {
     implicit def list_to_nList ( data: List[nElement] ): nList = nList( data )
     implicit def nList_to_list ( data: nList ): List[nElement] = data.toList
 
+    implicit def elem_to_optStr ( data: nElement ): Option[String]
+        = data.asString_?
+    implicit def elem_to_optBigInt ( data: nElement ): Option[BigInt]
+        = data.asInt_?
+    implicit def elem_to_optInt ( data: nElement ): Option[Int]
+        = data.asInt_?.filter( _.isValidInt ).map( _.intValue )
+    implicit def elem_to_optBigFloat ( data: nElement ): Option[BigDecimal]
+        = data.asFloat_?
+    implicit def elem_to_optDouble ( data: nElement ): Option[Double]
+        = data.asFloat_?.map( _.doubleValue )
+    implicit def elem_to_optBool ( data: nElement ): Option[Boolean]
+        = data.asBool_?
+    implicit def elem_to_optObj ( data: nElement ): Option[nObject]
+        = data.asObject_?
+    implicit def elem_to_optList ( data: nElement ): Option[nList]
+        = data.asArray_?
+
     /** Parses a map */
     private def parseMap( data: Map[_, _] ) = nObject(
         data.foldLeft( Map[String,nElement]() ) {

@@ -126,5 +126,23 @@ class nObjectTest extends Specification {
 
     }
 
+    "Patching an object" should {
+
+        "produce the input when there aren't any patches performed" in {
+            obj.patch( List[Any]() ).done must_== List()
+        }
+
+        "produce a new value" in {
+            obj.patch( List[Any]() )
+                .patch( "str", (list, value: String) => value :: list )
+                .patch( "NoExist", (list, value: String) => value :: list )
+                .patch( "int", (list, value: Int) => value :: list )
+                .patch( "obj", (list, value: Int) => value :: list )
+                .patch( "float", (list, value: Double) => value :: list )
+                .done must_==
+                    List(3.1415, 1234, "Something")
+        }
+    }
+
 }
 

@@ -198,6 +198,33 @@ object nObject {
         def ary ( key: String ): nList
             = ary_?( key ).getOrElse( throw nMissingKey(key, "Array") )
 
+
+        /** The type definition for implicit path methods */
+        type PatchType[A] = (nElement) => Option[A]
+
+        /**
+        * A patch object, which is used to make progressive changes
+        * to an initial object
+        */
+        class Patch[U] ( private val initial: U ) {
+
+            /** Returns the final product of this patch sequence */
+            def done: U = initial
+
+            /** Applies a callback if a key exists */
+            def patch[I : PatchType] (
+                key: String, mutator: (U, I) => U
+            ): Patch[U] = {
+                get_?(key)
+                    .flatMap( implicitly[nElement => Option[I]] _ )
+                    .map( value => new Patch( mutator(initial, value) ) )
+                    .getOrElse(this)
+            }
+        }
+
+        /** Begins a patching process for a set of keys */
+        def patch[U] ( initial: U ) = new Patch[U]( initial )
+
     }
 
     /**
