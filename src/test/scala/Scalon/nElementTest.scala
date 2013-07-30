@@ -61,6 +61,12 @@ class nElementTest extends Specification {
             nElement( Set(Some(1), None, Some(2)) ) must_== nList(1, 2)
         }
 
+        "Handle objects that implement ToJson" in {
+            nElement( new nElement.ToJson {
+                override def toJson = nString("test")
+            }) must_== nString("test")
+        }
+
     }
 
 }

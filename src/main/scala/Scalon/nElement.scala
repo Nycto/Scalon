@@ -16,6 +16,13 @@ object nType extends Enumeration {
  */
 object nElement {
 
+    /** For objects that can be converted into nElement instances */
+    trait ToJson {
+
+        /** Returns this object as a JSON element */
+        def toJson: nElement
+    }
+
     implicit def str_to_nString ( data: String ): nString = new nString( data )
     implicit def nString_to_str ( data: nString ): String = data.asString
 
@@ -68,6 +75,7 @@ object nElement {
     def apply ( elem: Any ): nElement = elem match {
         case null => nNull()
         case data: nElement => data
+        case data: ToJson => data.toJson
         case data: String => nString(data)
         case data: Int => nInt( BigInt(data) )
         case data: BigInt => nInt( data )
