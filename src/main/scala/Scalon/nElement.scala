@@ -2,6 +2,7 @@ package com.roundeights.scalon
 
 import com.google.gson.{JsonElement, Gson}
 import scala.language.implicitConversions
+import java.util.UUID
 
 /**
  * The various types of values
@@ -61,6 +62,7 @@ object nElement {
         = data.asObject_?
     implicit def elem_to_optList ( data: nElement ): Option[nList]
         = data.asArray_?
+    implicit def elem_to_uuid ( data: nElement ): Option[UUID] = data.asUUID_?
 
     /** Parses a map */
     private def parseMap( data: Map[_, _] ) = nObject(
@@ -156,6 +158,8 @@ trait nElement extends Equals {
         = asObject_?.getOrElse( throw nTypeMismatch( "Object", getType ) )
     def asArray: nList
         = asArray_?.getOrElse( throw nTypeMismatch( "Array", getType ) )
+    def asUUID: UUID
+        = asUUID_?.getOrElse( throw nTypeMismatch( "UUID", getType ) )
 
     /**
      * Safe type casting methods
@@ -166,6 +170,14 @@ trait nElement extends Equals {
     def `asBool_?`: Option[Boolean] = None
     def `asObject_?`: Option[nObject] = None
     def `asArray_?`: Option[nList] = None
+
+    def `asUUID_?`: Option[UUID] = {
+        asString_?.flatMap( value => try {
+            Some( UUID.fromString(value) )
+        } catch {
+            case _: IllegalArgumentException => None
+        })
+    }
 
 }
 

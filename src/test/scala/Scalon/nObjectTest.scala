@@ -1,6 +1,7 @@
 package com.roundeights.scalon
 
 import org.specs2.mutable._
+import java.util.UUID
 
 class nObjectTest extends Specification {
 
@@ -12,8 +13,11 @@ class nObjectTest extends Specification {
         truthy: true,
         falsey: false,
         obj: { 1:1 },
-        ary: [ 1, 2, 3 ]
+        ary: [ 1, 2, 3 ],
+        uuid: "17edfc04-24c0-40e2-a732-58c75e6618fb"
     }""").asObject
+
+    val uuid = UUID.fromString( "17edfc04-24c0-40e2-a732-58c75e6618fb" )
 
     "Accessing values" should {
 
@@ -64,6 +68,12 @@ class nObjectTest extends Specification {
             obj.ary_?("int") must_== None
         }
 
+        "Provide access to UUIDs" in {
+            obj.uuid_?("uuid") must_== Some( uuid )
+            obj.uuid_?("str") must_== None
+            obj.uuid_?("int") must_== None
+        }
+
         "Allow for direct access" in {
             obj.get("str") must_== nString("Something")
             obj.str("str") must_== "Something"
@@ -72,6 +82,7 @@ class nObjectTest extends Specification {
             obj.bool("truthy") must_== true
             obj.obj("obj") must_== nParser.json("{1:1}").asObject
             obj.ary("ary") must_== 1 :: 2 :: 3 :: nList()
+            obj.uuid("uuid") must_== uuid
         }
 
         "throw exceptions for invalid direct access" in {
@@ -90,8 +101,8 @@ class nObjectTest extends Specification {
 
         "List their keys" in {
             obj.keySet must_== Set(
-                "str", "int", "float", "nil",
-                "truthy", "falsey", "obj", "ary"
+                "str", "int", "float", "nil", "truthy",
+                "falsey", "obj", "ary", "uuid"
             )
         }
 

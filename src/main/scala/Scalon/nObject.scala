@@ -3,6 +3,7 @@ package com.roundeights.scalon
 import com.google.gson.{JsonObject, JsonElement, Gson}
 import scala.collection.{Iterable, Iterator}
 import scala.collection.immutable.Map
+import java.util.UUID
 
 /**
  * Notation Objects
@@ -197,6 +198,20 @@ object nObject {
          */
         def ary ( key: String ): nList
             = ary_?( key ).getOrElse( throw nMissingKey(key, "Array") )
+
+        /**
+         * Returns a key as a String, if the key exists and it is the
+         * correct type
+         */
+        def uuid_? ( key: String ): Option[UUID]
+            = get_?( key ).flatMap( _.asUUID_? )
+
+        /**
+         * Returns a key as a UUID, if the key exists and it is the
+         * correct type
+         */
+        def uuid ( key: String ): UUID
+            = uuid_?( key ).getOrElse( throw nMissingKey(key, "UUID") )
 
 
         /** The type definition for implicit path methods */
