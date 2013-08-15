@@ -102,6 +102,7 @@ object nElement {
         case data: Double => nFloat( BigDecimal(data) )
         case data: BigDecimal => nFloat( data )
         case data: Boolean => nBool( data )
+        case data: UUID => nString( data.toString )
         case data: Set[_] => parseList( data )
         case data: Seq[_] => parseList( data )
         case data: Map[_, _] => parseMap( data )

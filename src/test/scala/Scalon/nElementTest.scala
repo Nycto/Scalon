@@ -1,6 +1,7 @@
 package com.roundeights.scalon
 
 import org.specs2.mutable._
+import java.util.UUID
 
 class nElementTest extends Specification {
 
@@ -30,6 +31,11 @@ class nElementTest extends Specification {
 
         "Handle booleans" in {
             nElement(true) must_== nBool(true)
+        }
+
+        "Handle UUIDs" in {
+            val uuid = "10a4da99-7cac-4299-9da1-fb57802e0ca4"
+            nElement(UUID.fromString(uuid)) must_== nString(uuid)
         }
 
         "Handle List" in {
