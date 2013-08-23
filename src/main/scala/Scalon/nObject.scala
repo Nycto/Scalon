@@ -47,15 +47,20 @@ trait nObject extends nElement with nObject.Interface[nObject] with Equals {
  */
 object nObject {
 
-    /**
-     * Creates a new nObject
-     */
+    /** Creates a new nObject */
     def apply ( source: Map[String, nElement] = Map() ): nObject
         = new nObject.Native( source )
 
-    /**
-     * Creates a new nObject
-     */
+    /** Creates a new nObject */
+    def from ( source: Map[String, nElement.ToJson] ): nObject = {
+        new nObject.Native(
+            source.foldLeft( Map[String, nElement]() ) {
+                (accum, pair) => accum + ( pair._1 -> pair._2.toJson )
+            }
+        )
+    }
+
+    /** Creates a new nObject */
     def apply ( data: (Any, Any)* ): nObject
         = nElement( Map(data:_*) ).asObject
 
