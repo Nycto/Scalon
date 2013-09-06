@@ -49,6 +49,11 @@ class nObjectTest extends Specification {
             obj.get_?("falsey") must_== Some(nBool(false))
         }
 
+        "Provide loose access to Booleans" in {
+            nObject("key" -> "true").bool_~("key") must_== true
+            nObject("key" -> "false").bool_~("key") must_== false
+        }
+
         "Provide access to Nulls" in {
             obj.isNull("nil") must_== true
             obj.isNull("str") must_== false

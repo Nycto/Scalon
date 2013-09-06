@@ -177,6 +177,20 @@ object nObject {
             = bool_?( key ).getOrElse( throw nMissingKey(key, "Boolean") )
 
         /**
+         * Returns a key as a Boolean, if the key exists. Loosely intereprets
+         * other data types and converts them when possible
+         */
+        def bool_~? ( key: String ): Option[Boolean]
+            = get_?( key ).flatMap( _.asBool_~? )
+
+        /**
+         * Returns a key as a Boolean, if the key exists. Loosely intereprets
+         * other data types and converts them when possible
+         */
+        def bool_~ ( key: String ): Boolean
+            = bool_~?( key ).getOrElse( throw nMissingKey(key, "Boolean") )
+
+        /**
          * Returns a key as an Object, if the key exists and it is the
          * correct type
          */

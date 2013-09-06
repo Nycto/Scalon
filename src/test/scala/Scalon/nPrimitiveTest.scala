@@ -68,6 +68,35 @@ class nPrimitiveTest extends Specification {
             falsey.asString must_== "false"
         }
 
+        "Loosely convert to booleans" in {
+            nBool(true).asBool_~ must_== true
+            nBool(false).asBool_~ must_== false
+
+            nString("True").asBool_~ must_== true
+            nString("T").asBool_~ must_== true
+            nString("Yes").asBool_~ must_== true
+            nString("Y").asBool_~ must_== true
+            nString("On").asBool_~ must_== true
+
+            nString("False").asBool_~ must_== false
+            nString("F").asBool_~ must_== false
+            nString("No").asBool_~ must_== false
+            nString("N").asBool_~ must_== false
+            nString("Off").asBool_~ must_== false
+            nString("").asBool_~ must_== false
+
+            nString("Unrecognized").asBool_~? must_== None
+
+            nInt(1).asBool_~ must_== true
+            nInt(0).asBool_~ must_== false
+            nInt( 123 ).asBool_~? must_== None
+            nInt( -123 ).asBool_~? must_== None
+
+            nNull().asBool_~ must_== false
+
+            nFloat( 3.14 ).asBool_~? must_== None
+        }
+
     }
 
 }

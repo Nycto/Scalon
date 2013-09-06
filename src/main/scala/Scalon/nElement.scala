@@ -155,6 +155,8 @@ trait nElement extends Equals {
         = asFloat_?.getOrElse( throw nTypeMismatch( "Float", getType ) )
     def asBool: Boolean
         = asBool_?.getOrElse( throw nTypeMismatch( "Bool", getType ) )
+    def `asBool_~`: Boolean
+        = asBool_~?.getOrElse( throw nTypeMismatch( "Bool", getType ) )
     def asObject: nObject
         = asObject_?.getOrElse( throw nTypeMismatch( "Object", getType ) )
     def asArray: nList
@@ -169,6 +171,7 @@ trait nElement extends Equals {
     def `asInt_?`: Option[BigInt] = None
     def `asFloat_?`: Option[BigDecimal] = None
     def `asBool_?`: Option[Boolean] = None
+    def `asBool_~?`: Option[Boolean] = None
     def `asObject_?`: Option[nObject] = None
     def `asArray_?`: Option[nList] = None
 

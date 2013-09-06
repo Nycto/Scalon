@@ -19,6 +19,22 @@ case class nString ( override val asString: String ) extends nElement {
 
     /** {@inheritDoc} */
     override def toString: String = asString
+
+    /** {@inheritDoc} */
+    override def asBool_~? = asString.toLowerCase match {
+        case "true" => Some(true)
+        case "t" => Some(true)
+        case "yes" => Some(true)
+        case "y" => Some(true)
+        case "on" => Some(true)
+        case "false" => Some(false)
+        case "f" => Some(false)
+        case "no" => Some(false)
+        case "n" => Some(false)
+        case "off" => Some(false)
+        case "" => Some(false)
+        case _ => None
+    }
 }
 
 /**
@@ -46,6 +62,13 @@ case class nInt ( override val asInt: BigInt ) extends nElement {
 
     /** {@inheritDoc} */
     override def toString: String = asInt.toString
+
+    /** {@inheritDoc} */
+    override def asBool_~? = {
+        if ( asInt == 1 ) Some(true)
+        else if ( asInt == 0 ) Some(false)
+        else None
+    }
 }
 
 /**
@@ -91,6 +114,9 @@ case class nBool ( override val asBool: Boolean ) extends nElement {
     override def asBool_? = Some( asBool )
 
     /** {@inheritDoc} */
+    override def asBool_~? = Some( asBool )
+
+    /** {@inheritDoc} */
     override def asString_? = Some( asBool.toString )
 
     /** {@inheritDoc} */
@@ -113,6 +139,9 @@ case class nNull () extends nElement {
 
     /** {@inheritDoc} */
     override def toString: String = ""
+
+    /** {@inheritDoc} */
+    override def asBool_~? = Some( false )
 }
 
 
