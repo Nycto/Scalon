@@ -1,6 +1,6 @@
 package com.roundeights.scalon
 
-import com.google.gson.{JsonElement, Gson}
+import com.google.gson.{JsonElement, Gson, GsonBuilder}
 import scala.language.implicitConversions
 import java.util.UUID
 
@@ -118,20 +118,18 @@ object nElement {
  */
 trait nElement extends Equals {
 
-    /**
-     * Returns the type of this object
-     */
+    /** Returns the type of this object */
     def getType: nType.nType
 
-    /**
-     * Returns this object as a GSON object
-     */
+    /** Returns this object as a GSON object */
     private[scalon] def gson: JsonElement
 
-    /**
-     * Returns this object as a JSON string
-     */
+    /** Returns this object as a JSON string */
     def json: String = new Gson().toJson( gson )
+
+    /** Returns a formatted string of json */
+    def pretty: String
+        = new GsonBuilder().setPrettyPrinting.create.toJson(gson)
 
     /**
      * Type detection methods
