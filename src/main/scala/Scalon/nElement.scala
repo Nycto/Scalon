@@ -78,7 +78,7 @@ object nElement {
     )
 
     /** Parses a list of elements */
-    private def parseList ( data: Traversable[_] ): nList = {
+    private def parseList ( data: TraversableOnce[_] ): nList = {
         data.foldRight( nList() ) {
             (value, accum) => value match {
                 case None => accum
@@ -105,6 +105,7 @@ object nElement {
         case data: UUID => nString( data.toString )
         case data: Set[_] => parseList( data )
         case data: Seq[_] => parseList( data )
+        case data: Iterator[_] => parseList( data )
         case data: Map[_, _] => parseMap( data )
         case _ => throw new nParserException(
             "Unparsable type: %s".format( elem.getClass.getName )

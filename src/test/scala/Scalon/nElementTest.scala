@@ -47,6 +47,11 @@ class nElementTest extends Specification {
             nElement( List(Some(1), None, Some(2)) ) must_== nList(1, 2)
         }
 
+        "Handle Iterators" in {
+            nElement( List().iterator ) must_== nList()
+            nElement( List(1, 2, 3).iterator ) must_== nList(1, 2, 3)
+        }
+
         "Handle Maps" in {
             nElement( Map() ) must_== nObject()
             nElement( Map(1 -> "one", 2 -> "two") )
