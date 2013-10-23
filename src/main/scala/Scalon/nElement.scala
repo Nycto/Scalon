@@ -24,6 +24,42 @@ object nElement {
         def toJson: nElement
     }
 
+    /** For objects that contain a simple element */
+    trait Castable {
+
+        /** Returns the interenal element */
+        def asElem: nElement
+
+        /** Type casting methods */
+        def asString: String = asElem.asString
+        def asInt: BigInt = asElem.asInt
+        def asFloat: BigDecimal = asElem.asFloat
+        def asBool: Boolean = asElem.asBool
+        def `asBool_~`: Boolean = asElem.asBool_~
+        def asObject: nObject = asElem.asObject
+        def asArray: nList = asElem.asArray
+        def asUUID: UUID = asElem.asUUID
+
+        /** Type detection methods */
+        def isString: Boolean = asElem.isString
+        def isInt: Boolean = asElem.isInt
+        def isFloat: Boolean = asElem.isFloat
+        def isBool: Boolean = asElem.isBool
+        def isNull: Boolean = asElem.isNull
+        def isObject: Boolean = asElem.isObject
+        def isArray: Boolean = asElem.isArray
+
+        /** Safe type casting methods */
+        def `asString_?`: Option[String] = asElem.asString_?
+        def `asInt_?`: Option[BigInt] = asElem.asInt_?
+        def `asFloat_?`: Option[BigDecimal] = asElem.asFloat_?
+        def `asBool_?`: Option[Boolean] = asElem.asBool_?
+        def `asBool_~?`: Option[Boolean] = asElem.asBool_~?
+        def `asObject_?`: Option[nObject] = asElem.asObject_?
+        def `asArray_?`: Option[nList] = asElem.asArray_?
+        def `asUUID_?`: Option[UUID] = asElem.asUUID_?
+    }
+
     implicit def str_to_nString ( data: String ): nString = new nString( data )
     implicit def nString_to_str ( data: nString ): String = data.asString
 
