@@ -263,6 +263,16 @@ object nObject {
                     .map( value => new Patch( mutator(initial, value) ) )
                     .getOrElse(this)
             }
+
+            /** Applies a callback if a key exists, using an explicit cast */
+            def patchAs[I] (
+                key: String, cast: (nElement) => I, mutator: (U, I) => U
+            ): Patch[U] = {
+                get_?(key)
+                    .map( cast )
+                    .map( value => new Patch( mutator(initial, value) ) )
+                    .getOrElse(this)
+            }
         }
 
         /** Begins a patching process for a set of keys */

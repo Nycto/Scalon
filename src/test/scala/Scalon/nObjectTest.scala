@@ -155,9 +155,10 @@ class nObjectTest extends Specification {
                 .patch( "int", (list, value: Int) => value :: list )
                 .patch( "obj", (list, value: Int) => value :: list )
                 .patch( "float", (list, value: Double) => value :: list )
+                .patchAs[String]( "nil", _.asString, _.::(_) )
                 .patchElem( "nil", (list, value) => value :: list )
                 .done must_==
-                    List(nNull(), 3.1415, 1234, "Something")
+                    List(nNull(), "", 3.1415, 1234, "Something")
         }
     }
 
