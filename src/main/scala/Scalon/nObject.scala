@@ -72,107 +72,65 @@ object nObject {
      */
     trait Interface [T] extends Iterable[(String, nElement)] {
 
-        /**
-         * Builds a new output object any time an element is added or removed
-         */
+        /** Builds a new object any time an element is added or removed */
         protected def build ( obj: nObject ): T
 
-        /**
-         * Returns this object as a map
-         */
+        /** Returns this object as a map */
         def toMap: Map[String, nElement]
 
-        /**
-         * Returns a value from this object
-         */
+        /** Returns a value from this object */
         def get_?( key: String ): Option[nElement]
 
-        /**
-         * Returns a value from this object
-         */
+        /** Returns a value from this object */
         def get( key: String ): nElement
             = get_?( key ).getOrElse( throw nMissingKey(key, "Element") )
 
-        /**
-         * Adds a new value to this object
-         */
+        /** Adds a new value to this object */
         def + ( keyVal: (Any, Any) ): T = build( new nObject.Native(
             toMap + ( keyVal._1.toString -> nElement( keyVal._2 ) )
         ) )
 
-        /**
-         * Adds a new value to this object
-         */
+        /** Adds a new value to this object */
         def - ( key: String ): T = build( new nObject.Native( toMap - key ) )
 
-        /**
-         * Returns whether a key exists
-         */
+        /** Returns whether a key exists */
         def contains( key: String ): Boolean = get_?(key).isDefined
 
-        /**
-         * Returns a set of all the keys in this object
-         */
+        /** Returns a set of all the keys in this object */
         def keySet: Set[String] = iterator.foldLeft( Set[String]() )( _ + _._1 )
 
-        /**
-         * Returns whether a key exists and is null
-         */
+        /** Returns whether a key exists and is null */
         def isNull ( key: String ): Boolean = get_?( key ).exists( _.isNull )
 
-        /**
-         * Returns a key as a String, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as a String, if it exists and is the right type */
         def str_? ( key: String ): Option[String]
             = get_?( key ).filter( _.isString ).map( _.asString )
 
-        /**
-         * Returns a key as a String, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as a String, if it exists and is the right type */
         def str ( key: String ): String
             = str_?( key ).getOrElse( throw nMissingKey(key, "String") )
 
-        /**
-         * Returns a key as an Integer, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as an Integer, if it exists and is the right type */
         def int_? ( key: String ): Option[BigInt]
             = get_?( key ).filter( _.isInt ).map( _.asInt )
 
-        /**
-         * Returns a key as an Integer, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as an Integer, if it exists and is the right type */
         def int ( key: String ): BigInt
             = int_?( key ).getOrElse( throw nMissingKey(key, "Integer") )
 
-        /**
-         * Returns a key as a Float, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as a Float, if it exists and is the right type */
         def float_? ( key: String ): Option[BigDecimal]
             = get_?( key ).filter( _.isFloat ).map( _.asFloat )
 
-        /**
-         * Returns a key as a Float, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as a Float, if it exists and is the right type */
         def float ( key: String ): BigDecimal
             = float_?( key ).getOrElse( throw nMissingKey(key, "Float") )
 
-        /**
-         * Returns a key as a Boolean, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as a Boolean, if it exists and is the right type */
         def bool_? ( key: String ): Option[Boolean]
             = get_?( key ).filter( _.isBool ).map( _.asBool )
 
-        /**
-         * Returns a key as a Boolean, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as a Boolean, if it exists and is the right type */
         def bool ( key: String ): Boolean
             = bool_?( key ).getOrElse( throw nMissingKey(key, "Boolean") )
 
@@ -190,45 +148,27 @@ object nObject {
         def bool_~ ( key: String ): Boolean
             = bool_~?( key ).getOrElse( throw nMissingKey(key, "Boolean") )
 
-        /**
-         * Returns a key as an Object, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as an Object, if it exists and is the right type */
         def obj_? ( key: String ): Option[nObject]
             = get_?( key ).filter( _.isObject ).map( _.asObject )
 
-        /**
-         * Returns a key as an Object, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as an Object, if it exists and is the right type */
         def obj ( key: String ): nObject
             = obj_?( key ).getOrElse( throw nMissingKey(key, "Object") )
 
-        /**
-         * Returns a key as an Array, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as an Array, if it exists and is the right type */
         def ary_? ( key: String ): Option[nList]
             = get_?( key ).filter( _.isArray ).map( _.asArray )
 
-        /**
-         * Returns a key as an Array, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as an Array, if it exists and is the right type */
         def ary ( key: String ): nList
             = ary_?( key ).getOrElse( throw nMissingKey(key, "Array") )
 
-        /**
-         * Returns a key as a String, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as a String, if it exists and is the right type */
         def uuid_? ( key: String ): Option[UUID]
             = get_?( key ).flatMap( _.asUUID_? )
 
-        /**
-         * Returns a key as a UUID, if the key exists and it is the
-         * correct type
-         */
+        /** Returns a key as a UUID, if it exists and is the right type */
         def uuid ( key: String ): UUID
             = uuid_?( key ).getOrElse( throw nMissingKey(key, "UUID") )
 
@@ -237,9 +177,9 @@ object nObject {
         type PatchType[A] = (nElement) => Option[A]
 
         /**
-        * A patch object, which is used to make progressive changes
-        * to an initial object
-        */
+         * A patch object, which is used to make progressive changes
+         * to an initial object
+         */
         class Patch[U] ( private val initial: U ) {
 
             /** Returns the final product of this patch sequence */
@@ -277,7 +217,6 @@ object nObject {
 
         /** Begins a patching process for a set of keys */
         def patch[U] ( initial: U ) = new Patch[U]( initial )
-
     }
 
     /**
@@ -306,7 +245,6 @@ object nObject {
         /** {@inheritDoc} */
         override def get_?( key: String ): Option[nElement]
             = Option( inner.get(key) ).map( nParser.gson( _ ) )
-
     }
 
     /**
@@ -328,7 +266,6 @@ object nObject {
 
         /** {@inheritDoc} */
         override def get_?( key: String ): Option[nElement] = toMap.get( key )
-
     }
 
 }
