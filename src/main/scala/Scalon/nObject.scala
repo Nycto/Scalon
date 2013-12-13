@@ -78,6 +78,20 @@ object nObject {
         /** Returns this object as a map */
         def toMap: Map[String, nElement]
 
+        /** Converts an nElement to another type for the 'toMapOf' method */
+        type MapCast[A] = (nElement) => Option[A]
+
+        /** Converts this element to a map of a specific type */
+        def toMapOf[O : MapCast]: Map[String, O] = {
+            iterator.foldLeft( Map[String,O]() ) { (accum, pair) =>
+                val value: Option[O] = pair._2
+                value match {
+                    case None => accum
+                    case Some(item) => accum + (pair._1 -> item)
+                }
+            }
+        }
+
         /** Returns a value from this object */
         def get_?( key: String ): Option[nElement]
 

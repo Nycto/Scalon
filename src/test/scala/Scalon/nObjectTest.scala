@@ -125,9 +125,11 @@ class nObjectTest extends Specification {
         }
 
         "Convert to maps" in {
-            nParser.jsonObj("{1:2,3:4}").toMap must_== Map(
-                "1" -> nInt(2), "3" -> nInt(4)
-            )
+            nParser.jsonObj("{1:2,3:4}").toMap must_==
+                Map( "1" -> nInt(2), "3" -> nInt(4) )
+
+            nParser.jsonObj("{1:2,3:4}").toMapOf[String] must_==
+                Map( "1" -> "2", "3" -> "4" )
         }
 
         "allow keys to be added" in {
