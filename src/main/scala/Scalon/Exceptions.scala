@@ -23,10 +23,10 @@ case class nTypeMismatch (
  * When a requested nObject key is missing
  */
 case class nMissingKey (
-    key: String,
-    expectedType: String
+    val key: String,
+    val expectedType: String
 ) extends nException(
-    "nObject is missing the '%s' key of type '%s'".format(key, expectedType)
+    "Object is missing the '%s' key of type '%s'".format(key, expectedType)
 )
 
 
