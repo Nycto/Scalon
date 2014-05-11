@@ -15,7 +15,7 @@ credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 // Application dependencies
 libraryDependencies ++= Seq(
-    "com.google.code.gson" % "gson" % "2.2.2",
-    "org.specs2" %% "specs2" % "2.3.4" % "test"
+    "com.google.code.gson" % "gson" % "2.2.4",
+    "org.specs2" %% "specs2" % "2.3.11" % "test"
 )
 
