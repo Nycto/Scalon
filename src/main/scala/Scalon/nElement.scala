@@ -134,7 +134,7 @@ object nElement {
         case data: String => nString(data)
         case data: Int => nInt( BigInt(data) )
         case data: BigInt => nInt( data )
-        case data: Float => nFloat( BigDecimal(data) )
+        case data: Float => nFloat( BigDecimal(data.toDouble) )
         case data: Double => nFloat( BigDecimal(data) )
         case data: BigDecimal => nFloat( data )
         case data: Boolean => nBool( data )

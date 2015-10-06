@@ -4,7 +4,7 @@ organization := "com.roundeights"
 
 version := "0.2"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.7"
 
 // Compiler flags
 scalacOptions ++= Seq("-deprecation", "-feature")
@@ -15,7 +15,7 @@ credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 // Application dependencies
 libraryDependencies ++= Seq(
-    "com.google.code.gson" % "gson" % "2.2.4",
-    "org.specs2" %% "specs2" % "2.3.11" % "test"
+    "com.google.code.gson" % "gson" % "2.+",
+    "org.specs2" %% "specs2" % "2.3.+" % "test"
 )
 
